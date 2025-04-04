@@ -1,0 +1,74 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.cover_img_container {
+  display: flex;
+  justify-content: center;
+  padding: 20px;
+
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+
+  position: relative;
+}
+
+.cover_img_container::before {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  height: 100%;
+  width: 100%;
+  background-color: rgba(0, 0, 0, 0.7);
+  content: "";
+}
+
+.cover_img_container > img {
+  z-index: 1;
+  max-height: 350px;
+  height: 100%;
+}
+
+.first_cover {
+  display: flex;
+  gap: 20px;
+}
+
+.title_cover {
+  display: flex;
+  align-items: flex-end;
+  font-size: 50px;
+  font-weight: bold;
+}
+
+.date_cover {
+  display: flex;
+  align-items: center;
+}
+
+.company_cover {
+  font-size: 20px;
+}
+
+.second_cover {
+  display: flex;
+  gap: 10px;
+}
+
+.third_cover {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.subtitle_cover {
+  font-size: 30px;
+  font-weight: 400;
+}
+
+.description_cover {
+  line-height: 0.7cm;
+}
