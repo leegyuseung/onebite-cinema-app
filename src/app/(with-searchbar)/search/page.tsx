@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import dummy from "../../../mock/dummy.json";
+import { MovieData } from "@/types/types";
 
 export default async function Page({
   searchParams,
@@ -8,11 +8,20 @@ export default async function Page({
   searchParams: Promise<{ q: string }>;
 }) {
   const { q } = await searchParams;
-  const movies = dummy.filter((movie) => movie.title.includes(q));
+  const response = await fetch(
+    `${process.env.NEXT_PUBLIC_API_SERVER_URL}/movie/search?q=${q}`,
+    { next: { revalidate: 60 * 30 } }
+  );
+
+  if (!response.ok) {
+    return <div>오류가 발생했습니다.</div>;
+  }
+
+  const searchMovies: MovieData[] = await response.json();
 
   return (
     <div>
-      {movies.map((movie) => (
+      {searchMovies.map((movie) => (
         <Link key={movie.id} href={`/movie/${movie.id}`}>
           <Image
             src={movie.posterImgUrl}

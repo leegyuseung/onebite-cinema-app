@@ -1,6 +1,5 @@
-import style from "./page.module.css";
-import movies from "../../../mock/dummy.json";
 import { MovieData } from "@/types/types";
+import style from "./page.module.css";
 import Image from "next/image";
 
 export default async function Page({
@@ -9,7 +8,11 @@ export default async function Page({
   params: Promise<{ id: string }>;
 }) {
   const { id } = await params;
-  const movie = movies.find((movie) => movie.id.toString() === id);
+  const response = await fetch(
+    `${process.env.NEXT_PUBLIC_API_SERVER_URL}/movie/${id}`,
+    { cache: "force-cache" }
+  );
+  const movie: MovieData = await response.json();
   const {
     title,
     releaseDate,
@@ -19,7 +22,7 @@ export default async function Page({
     description,
     runtime,
     posterImgUrl,
-  } = movie as MovieData;
+  } = movie;
 
   return (
     <div className={style.container}>
