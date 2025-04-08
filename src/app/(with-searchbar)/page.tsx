@@ -35,7 +35,7 @@ async function AllMovies() {
 async function RecomMovies() {
   const recommandMoviesResponse = await fetch(
     `${process.env.NEXT_PUBLIC_API_SERVER_URL}/movie/random`,
-    { cache: "no-store" }
+    { next: { revalidate: 1 } }
   );
   if (!recommandMoviesResponse.ok) {
     return <div>오류가 발생했습니다.</div>;
