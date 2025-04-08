@@ -1,6 +1,18 @@
 import { MovieData } from "@/types/types";
+import { notFound } from "next/navigation";
 import style from "./page.module.css";
 import Image from "next/image";
+
+export async function generateStaticParams() {
+  const response = await fetch(
+    `${process.env.NEXT_PUBLIC_API_SERVER_URL}/movie`
+  );
+
+  const movieData: MovieData[] = await response.json();
+
+  const id = movieData.map((movie) => ({ id: movie.id.toString() }));
+  return id;
+}
 
 export default async function Page({
   params,
@@ -12,6 +24,11 @@ export default async function Page({
     `${process.env.NEXT_PUBLIC_API_SERVER_URL}/movie/${id}`,
     { cache: "force-cache" }
   );
+
+  if (response.status === 404) {
+    notFound();
+  }
+
   const movie: MovieData = await response.json();
   const {
     title,
