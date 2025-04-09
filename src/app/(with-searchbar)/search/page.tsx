@@ -1,12 +1,14 @@
 import Image from "next/image";
 import Link from "next/link";
 import { MovieData } from "@/types/types";
+import { delay } from "@/util/delay";
 
 export default async function Page({
   searchParams,
 }: {
   searchParams: Promise<{ q: string }>;
 }) {
+  await delay(1000);
   const { q } = await searchParams;
   const response = await fetch(
     `${process.env.NEXT_PUBLIC_API_SERVER_URL}/movie/search?q=${q}`,
