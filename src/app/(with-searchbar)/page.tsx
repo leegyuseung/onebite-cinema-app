@@ -1,9 +1,14 @@
 import style from "./page.module.css";
 import Link from "next/link";
 import Image from "next/image";
+import MovieItemSkeleton from "@/components/skeleton/movie-item-skeleton";
+import MovieItemSmallSkeleton from "@/components/skeleton/movie-item-small-skeleton";
 import { MovieData } from "@/types/types";
+import { delay } from "@/util/delay";
+import { Suspense } from "react";
 
 async function AllMovies() {
+  await delay(500);
   const moviesResponse = await fetch(
     `${process.env.NEXT_PUBLIC_API_SERVER_URL}/movie`,
     {
@@ -33,6 +38,7 @@ async function AllMovies() {
 }
 
 async function RecomMovies() {
+  await delay(1000);
   const recommandMoviesResponse = await fetch(
     `${process.env.NEXT_PUBLIC_API_SERVER_URL}/movie/random`,
     { next: { revalidate: 1 } }
@@ -58,16 +64,23 @@ async function RecomMovies() {
   );
 }
 
+// 강제로 다이나믹하게 만들기
+export const dynamic = "force-dynamic";
+
 export default function Home() {
   return (
     <div className={style.container}>
       <section className={style.recommand_section_container}>
         <h3>지금 가장 추천하는 영화</h3>
-        <RecomMovies />
+        <Suspense fallback={<MovieItemSkeleton />}>
+          <RecomMovies />
+        </Suspense>
       </section>
       <section className={style.movie_section_container}>
         <h3>등록된 모든 영화</h3>
-        <AllMovies />
+        <Suspense fallback={<MovieItemSmallSkeleton />}>
+          <AllMovies />
+        </Suspense>
       </section>
     </div>
   );
