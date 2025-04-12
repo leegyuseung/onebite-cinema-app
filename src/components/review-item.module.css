@@ -1,0 +1,33 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  padding: 15px;
+}
+
+.container .title_container {
+  display: flex;
+  gap: 15px;
+  align-items: center;
+}
+
+.container .title_container .author {
+  font-size: 17px;
+  font-weight: bold;
+}
+
+.container .title_container .date {
+  font-size: 12px;
+  color: gray;
+}
+
+.container .content {
+  font-size: 12px;
+}
+
+.container .delete_btn {
+  font-size: 12px;
+  color: gray;
+  text-decoration: underline;
+  cursor: pointer;
+}
