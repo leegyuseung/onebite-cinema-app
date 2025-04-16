@@ -1,9 +1,10 @@
 import Image from "next/image";
 import Link from "next/link";
+import MovieItemSkeleton from "@/components/skeleton/movie-item-skeleton";
 import { MovieData } from "@/types/types";
 import { delay } from "@/util/delay";
 import { Suspense } from "react";
-import MovieItemSkeleton from "@/components/skeleton/movie-item-skeleton";
+import { Metadata } from "next";
 
 async function SearchResult({ q }: { q: string }) {
   await delay(1000);
@@ -34,10 +35,27 @@ async function SearchResult({ q }: { q: string }) {
   );
 }
 
+export async function generateMetadata({
+  searchParams,
+}: {
+  searchParams: Promise<{ q?: string }>;
+}): Promise<Metadata> {
+  const { q } = await searchParams;
+  return {
+    title: `한입 씨네마 : ${q} 검색`,
+    description: `${q}의 검색 결과입니다.`,
+    openGraph: {
+      title: `한입 씨네마 : ${q} 검색`,
+      description: `${q}의 검색 결과입니다.`,
+      images: ["/thumbnail.png"],
+    },
+  };
+}
+
 export default async function Page({
   searchParams,
 }: {
-  searchParams: { q?: string };
+  searchParams: Promise<{ q?: string }>;
 }) {
   const { q } = await searchParams;
 

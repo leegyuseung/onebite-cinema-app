@@ -4,6 +4,7 @@ import style from "./page.module.css";
 import Image from "next/image";
 import ReviewItem from "@/components/review-item";
 import ReviewEditor from "@/components/review-editor";
+import { Metadata } from "next";
 
 export async function generateStaticParams() {
   const response = await fetch(
@@ -84,6 +85,35 @@ async function ReviewList({ movieId }: { movieId: string }) {
       ))}
     </section>
   );
+}
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}): Promise<Metadata> {
+  const { id } = await params;
+  const response = await fetch(
+    `${process.env.NEXT_PUBLIC_API_SERVER_URL}/movie/${id}`,
+    { cache: "force-cache" }
+  );
+
+  if (!response.ok) {
+    throw new Error(response.statusText);
+  }
+
+  const movie: MovieData = await response.json();
+  const { title, description, posterImgUrl } = movie;
+
+  return {
+    title: `${title} - 한입 씨네마`,
+    description: `${description}`,
+    openGraph: {
+      title: `${title} - 한입 씨네마`,
+      description: `${description}`,
+      images: [posterImgUrl],
+    },
+  };
 }
 
 export default async function Page({

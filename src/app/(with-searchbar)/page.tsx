@@ -6,6 +6,7 @@ import MovieItemSmallSkeleton from "@/components/skeleton/movie-item-small-skele
 import { MovieData } from "@/types/types";
 import { delay } from "@/util/delay";
 import { Suspense } from "react";
+import { Metadata } from "next";
 
 async function AllMovies() {
   await delay(500);
@@ -66,7 +67,15 @@ async function RecomMovies() {
 
 // 강제로 다이나믹하게 만들기
 export const dynamic = "force-dynamic";
-
+export const metadata: Metadata = {
+  title: "한입 씨네마",
+  description: "한입 씨네마에 등록된 영화를 만나보세요.",
+  openGraph: {
+    title: "한입 씨네마",
+    description: "한입 씨네마에 등록된 영화를 만나보세요.",
+    images: ["/thumbnail.png"],
+  },
+};
 export default function Home() {
   return (
     <div className={style.container}>
